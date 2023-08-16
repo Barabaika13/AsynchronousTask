@@ -7,20 +7,18 @@ namespace AsynchronousTask
         public event Action? ImageStarted;
         public event Action? ImageCompleted;
 
-        public async Task DownloadAsync(string remoteUri, string fileName, CancellationToken token)
+        public async Task DownloadAsync(string remoteUri, string fileName, CancellationToken ct)
         {
             var myWebClient = new WebClient();
-            Console.WriteLine("Качаю \"{0}\" из \"{1}\" .......\n", fileName, remoteUri);
+            Console.WriteLine($"Качаю \"{fileName}\" из \"{remoteUri}\" .......\n");
             ImageStarted?.Invoke();
-
-            if (token.IsCancellationRequested)
-            {
-                Console.WriteLine("Операция прервана");
-                return;
-            }
-
             await myWebClient.DownloadFileTaskAsync(remoteUri, fileName);
-            Console.WriteLine("Успешно скачал \"{0}\" из \"{1}\"", fileName, remoteUri);
+            if (ct.IsCancellationRequested)
+            {
+                Console.WriteLine($"Файл {fileName} отменен");
+                ct.ThrowIfCancellationRequested();
+            }
+            Console.WriteLine($"Успешно скачал \"{fileName}\" из \"{remoteUri}\"");
             ImageCompleted?.Invoke();
         }
     }
