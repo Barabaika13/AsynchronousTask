@@ -9,17 +9,35 @@ namespace AsynchronousTask
 
         public async Task DownloadAsync(string remoteUri, string fileName, CancellationToken ct)
         {
-            var myWebClient = new WebClient();
-            Console.WriteLine($"Качаю \"{fileName}\" из \"{remoteUri}\" .......\n");
-            ImageStarted?.Invoke();
-            await myWebClient.DownloadFileTaskAsync(remoteUri, fileName);
-            if (ct.IsCancellationRequested)
+            using (WebClient myWebClient = new WebClient())
             {
-                Console.WriteLine($"Файл {fileName} отменен");
-                ct.ThrowIfCancellationRequested();
+                ct.Register(myWebClient.CancelAsync);
+
+                Console.WriteLine($"Качаю \"{fileName}\" из \"{remoteUri}\" .......");
+                ImageStarted?.Invoke();
+
+                try
+                {
+                    await myWebClient.DownloadFileTaskAsync(remoteUri, fileName);
+                }
+                catch (WebException ex) when (ex.Status == WebExceptionStatus.RequestCanceled)
+                {
+                    // исключение, которое возникает при отмене скачивания
+                    Console.WriteLine($"Файл {fileName} отменен");
+                    throw new OperationCanceledException();
+                }
+                catch (AggregateException ex) when (ex.InnerException is WebException exWeb && exWeb.Status == WebExceptionStatus.RequestCanceled)
+                {
+                    throw new OperationCanceledException();
+                }
+                catch (TaskCanceledException)
+                {
+                    throw new OperationCanceledException();
+                }                
+
+                Console.WriteLine($"Успешно скачал \"{fileName}\" из \"{remoteUri}\"");
+                ImageCompleted?.Invoke();
             }
-            Console.WriteLine($"Успешно скачал \"{fileName}\" из \"{remoteUri}\"");
-            ImageCompleted?.Invoke();
         }
     }
 }
