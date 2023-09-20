@@ -8,8 +8,8 @@ namespace AsynchronousTask
         {
             ImageDownloader imageDownloader = new ImageDownloader();
             NotificationService notificationService = new NotificationService();
-            imageDownloader.ImageStarted += notificationService.OnFileDownloadStarted;
-            imageDownloader.ImageCompleted += notificationService.OnFileDownloadCompleted;
+            imageDownloader.ImageStarted += NotificationService.OnFileDownloadStarted;
+            imageDownloader.ImageCompleted += NotificationService.OnFileDownloadCompleted;
             var tokenSource = new CancellationTokenSource();
             var token = tokenSource.Token;
 
@@ -22,101 +22,12 @@ namespace AsynchronousTask
             var t7 = imageDownloader.DownloadAsync("https://images.hdqwalls.com/download/sunflowes-field-8k-m3-7680x4320.jpg", "bigimage7.jpg", token);
             var t8 = imageDownloader.DownloadAsync("https://images.hdqwalls.com/download/switzerland-lake-landscape-mountains-10k-7p-7680x4320.jpg", "bigimage8.jpg", token);
             var t9 = imageDownloader.DownloadAsync("https://images.hdqwalls.com/download/mam-tor-castleton-united-kingdom-8k-0g-7680x4320.jpg", "bigimage9.jpg", token);
-            var t10 = imageDownloader.DownloadAsync("https://images.hdqwalls.com/download/lake-tekapo-8k-uo-7680x4320.jpg", "bigimage10.jpg", token);
-            //await Task.WhenAll(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10);
-            var tasks = new List<Task>() { t1, t2, t3, t4, t5, t6, t7, t8, t9, t10 };
-
-
-            //var t1 = Task.Run(() => imageDownloader.DownloadAsync("https://images.hdqwalls.com/download/beautiful-yosemite-8k-r7-7680x4320.jpg", "bigimage1.jpg", token), token);
-            //var t2 = Task.Run(() => imageDownloader.DownloadAsync("https://images.hdqwalls.com/download/snow-covered-mountains-8k-sf-7680x4320.jpg", "bigimage2.jpg", token), token);
-            //var t3 = Task.Run(() => imageDownloader.DownloadAsync("https://images.hdqwalls.com/download/skye-united-kingdom-8k-yh-7680x4320.jpg", "bigimage3.jpg", token), token);
-            //var t4 = Task.Run(() => imageDownloader.DownloadAsync("https://images.hdqwalls.com/download/brooklyn-bridge-blue-sky-buildings-8k-5f-7680x4320.jpg", "bigimage4.jpg", token), token);
-            //var t5 = Task.Run(() => imageDownloader.DownloadAsync("https://images.hdqwalls.com/download/churei-tower-mount-fuji-in-japan-8k-68-7680x4320.jpg", "bigimage5.jpg", token), token);
-            //var t6 = Task.Run(() => imageDownloader.DownloadAsync("https://images.hdqwalls.com/download/bridge-sunset-8k-9x-7680x4320.jpg", "bigimage6.jpg", token), token);
-            //var t7 = Task.Run(() => imageDownloader.DownloadAsync("https://images.hdqwalls.com/download/sunflowes-field-8k-m3-7680x4320.jpg", "bigimage7.jpg", token), token);
-            //var t8 = Task.Run(() => imageDownloader.DownloadAsync("https://images.hdqwalls.com/download/switzerland-lake-landscape-mountains-10k-7p-7680x4320.jpg", "bigimage8.jpg", token), token);
-            //var t9 = Task.Run(() => imageDownloader.DownloadAsync("https://images.hdqwalls.com/download/mam-tor-castleton-united-kingdom-8k-0g-7680x4320.jpg", "bigimage9.jpg", token), token);
-            //var t10 = Task.Run(() => imageDownloader.DownloadAsync("https://images.hdqwalls.com/download/lake-tekapo-8k-uo-7680x4320.jpg", "bigimage10.jpg", token), token);
-            //var tasks = new List<Task>() { t1, t2, t3, t4, t5, t6, t7, t8, t9, t10 };
-
-            //List<string> imageUrls = new List<string>()
-            //{
-            //        "https://images.hdqwalls.com/download/beautiful-yosemite-8k-r7-7680x4320.jpg",
-            //        "https://images.hdqwalls.com/download/snow-covered-mountains-8k-sf-7680x4320.jpg",
-            //        "https://images.hdqwalls.com/download/skye-united-kingdom-8k-yh-7680x4320.jpg",
-            //        "https://images.hdqwalls.com/download/brooklyn-bridge-blue-sky-buildings-8k-5f-7680x4320.jpg",
-            //        "https://images.hdqwalls.com/download/churei-tower-mount-fuji-in-japan-8k-68-7680x4320.jpg",
-            //        "https://images.hdqwalls.com/download/bridge-sunset-8k-9x-7680x4320.jpg",
-            //        "https://images.hdqwalls.com/download/sunflowes-field-8k-m3-7680x4320.jpg",
-            //        "https://images.hdqwalls.com/download/switzerland-lake-landscape-mountains-10k-7p-7680x4320.jpg",
-            //        "https://images.hdqwalls.com/download/mam-tor-castleton-united-kingdom-8k-0g-7680x4320.jpg",
-            //        "https://images.hdqwalls.com/download/lake-tekapo-8k-uo-7680x4320.jpg"
-            //};
-
-            //List<string> fileNames = new List<string>()
-            //{
-            //    "bigimage1.jpg",
-            //    "bigimage2.jpg",
-            //    "bigimage3.jpg",
-            //    "bigimage4.jpg",
-            //    "bigimage5.jpg",
-            //    "bigimage6.jpg",
-            //    "bigimage7.jpg",
-            //    "bigimage8.jpg",
-            //    "bigimage9.jpg",
-            //    "bigimage10.jpg"
-            //};
-
+            var t10 = imageDownloader.DownloadAsync("https://images.hdqwalls.com/download/lake-tekapo-8k-uo-7680x4320.jpg", "bigimage10.jpg", token);            
+            var tasks = new List<Task>() { t1, t2, t3, t4, t5, t6, t7, t8, t9, t10 };      
 
             Console.WriteLine("Нажмите клавишу A для выхода или любую другую клавишу для проверки статуса скачивания");
             ConsoleKeyInfo key = Console.ReadKey();
-            Console.WriteLine();
-
-            //List<Task> downloadTasks = new List<Task>();
-            //for (int i = 0; i < imageUrls.Count; i++)
-            //{
-            //    var t = imageDownloader.DownloadAsync(imageUrls[i], fileNames[i], token);
-            //    downloadTasks.Add(t);
-
-            //    if (key.Key == ConsoleKey.A)
-            //    {
-            //        tokenSource.Cancel();
-            //        Console.WriteLine("You have requested to cancel the download");
-            //        break; // Exit the loop if 'A' key is pressed
-            //    }
-            //    else
-            //    {
-            //        await t; // Wait for the current download task to complete
-            //        if (t.IsCompleted)
-            //        {
-            //            Console.WriteLine($"File {fileNames[i]} downloaded");
-            //        }
-            //        else
-            //        {
-            //            Console.WriteLine($"File {fileNames[i]} not downloaded");
-            //        }
-            //    }
-            //}
-
-
-            //try
-            //{
-            //    await Task.WhenAll(downloadTasks);
-            //}
-            //catch (OperationCanceledException)
-            //{
-            //    Console.WriteLine($"File downloading canceled");
-            //}
-            //finally
-            //{
-            //    tokenSource.Dispose();
-            //}
-
-            //for (int i = 0; i < downloadTasks.Count; i++)
-            //{
-            //    Console.WriteLine($"File status {fileNames[i]}: {downloadTasks[i].Status}");
-            //}
-
+            Console.WriteLine();                     
 
             if (key.Key == ConsoleKey.A)
             {
