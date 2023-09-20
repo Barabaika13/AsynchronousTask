@@ -1,6 +1,4 @@
-﻿using System.Net;
-
-namespace AsynchronousTask
+﻿namespace AsynchronousTask
 {
     internal class Program
     {
